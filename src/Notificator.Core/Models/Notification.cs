@@ -25,7 +25,7 @@ public class Notification
     /// <summary>
     /// Интервал отправки уведомления
     /// </summary>
-    public DateTimeOffset Interval { get; set; }
+    public TimeSpan? Interval { get; set; }
 
     /// <summary>
     /// Максимально кол-во отправок уведомления
