@@ -1,6 +1,6 @@
 ---
 name: new-feature
-about: Краткое описание функциональности
+about: Задача на добавление функциональности
 title: ''
 labels: ''
 assignees: ''
