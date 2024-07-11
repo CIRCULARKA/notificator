@@ -1,5 +1,5 @@
 ---
-name: Новый функционал
+name: new-feature
 about: Краткое описание функциональности
 title: ''
 labels: ''
