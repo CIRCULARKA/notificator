@@ -1,3 +1,3 @@
 # Notificator
 
-Сервис для отправки уведомлений.
+Notifications service.
