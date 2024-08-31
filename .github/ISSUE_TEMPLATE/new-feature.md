@@ -1,17 +1,17 @@
 ---
 name: new-feature
-about: Задача на добавление функциональности
+about: Request for new feature
 title: ''
 labels: ''
 assignees: ''
 
 ---
 
-# Цель
-ЗАЧЕМ нужнен функционал.
+# Goal
+What do you want to be achieved?
 
-# Алгоритм
-КАК нужно выполнить задачу.
+# Algorithm
+How feature should be implemented?
 
-# Доп. материалы
-Описание дополнительной информации, которая может пригодиться при решении задачи. Опциональный параграф.
+# Additional information
+Additional information that can help to implement the feature.
