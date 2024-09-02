@@ -19,6 +19,7 @@ classDiagram
         +TimeStamp Interval
         +int MaxAmount
         +int[] DaysOfTheWeek
+        +bool Proceeded
     }
 
     class User {
