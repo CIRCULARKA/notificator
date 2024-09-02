@@ -40,5 +40,5 @@ public class Notification
     /// <summary>
     /// Выполненные уведомления
     /// </summary>
-    public bool isCompleted { get; }
+    public bool IsCompleted { get; }
 }
