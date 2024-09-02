@@ -3,37 +3,42 @@
 public class Notification
 {
     /// <summary>
-    /// Уникальный идентификатор пользователя
+    /// Заголовок уведомления 
     /// </summary>
-    public Guid ID { get; set; } 
-
-    /// <summary>
-    /// Уникальный идентификатор пользователя, владеющего уведомлением
-    /// </summary>
-    public Guid OwnerID { get; set; }
+    public string Header { get; }
 
     /// <summary>
     /// Текст уведомления
     /// </summary>
-    public string Text { get; set; }
+    public string Text { get; }
 
     /// <summary>
     /// Время первой отправки уведомления
     /// </summary>
-    public DateTimeOffset StartTime { get; set; }
+    public DateTimeOffset StartTime { get; }
+
+    /// <summary>
+    /// Время последней отправки уведомления
+    /// </summary>
+    public DateTime? EndTime { get; }
 
     /// <summary>
     /// Интервал отправки уведомления
     /// </summary>
-    public TimeSpan? Interval { get; set; }
+    public TimeSpan? Interval { get; }
 
     /// <summary>
     /// Максимально кол-во отправок уведомления
     /// </summary>
-    public int MaxAmount { get; set; }
+    public int MaxAmount { get; }
 
     /// <summary>
     /// Дни недели, в которые может прийти уведомление
     /// </summary>
-    public List<int> DaysOfTheWeek { get; set; }
+    public List<int> DaysOfTheWeek { get; }
+
+    /// <summary>
+    /// Выполненные уведомления
+    /// </summary>
+    public bool isCompleted { get; }
 }
