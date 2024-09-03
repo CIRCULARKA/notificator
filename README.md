@@ -35,7 +35,7 @@ classDiagram
 * `Interval`. How often notification should be sent
 * `MaxAmount`. Another way to restrict notification sending. Sets maximum amount of times that notification can be sent
 * `DaysOfTheWeek`. Sets days of the week in which notification can be sent
-* `Completed`. Defines whether a notification is completed
+* `Completed`. Defines whether a notification is completed (i.e. notification was sent all possible times)
 
 ## Processing notifications
 ```mermaid
