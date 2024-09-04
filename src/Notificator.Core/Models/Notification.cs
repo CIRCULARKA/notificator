@@ -1,5 +1,8 @@
 ﻿namespace Notificator.Core.Models;
 
+/// <summary>
+/// Model of a notification
+/// </summary>
 public class Notification
 {
     /// <summary>

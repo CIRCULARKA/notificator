@@ -1,6 +1,5 @@
 namespace Notificator.Core.Models;
 
-
 /// <summary>
 /// Model for comunication with external systems
 /// </summary>
