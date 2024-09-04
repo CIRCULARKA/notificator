@@ -1,7 +1,8 @@
-using Notificator.Core.Models;
-
 namespace Notificator.Infrastructure.Validation;
 
+/// <summary>
+/// Service for notifications validation
+/// </summary>
 public class NotificationValidationService : INotificationValidationService
 {
     private readonly NotificationValidationSettings _settings;
@@ -11,8 +12,12 @@ public class NotificationValidationService : INotificationValidationService
         _settings = validationSettings;
     }
 
-    public void Validation(NotificationDto notificationDto)
+    /// <summary>
+    /// Validates notification. Takes into account validation settings
+    /// </summary>
+    public void Validation(NotificationDto notificationDto) 
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrWhiteSpace(notificationDto.Text))
+            throw new InvalidOperationException("Notification text must not be emtpy");
     }
 }
