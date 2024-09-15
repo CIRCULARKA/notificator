@@ -24,7 +24,7 @@ public class NotificationValidationService : INotificationValidationService
             throw new InvalidOperationException("Notification text must not be emtpy");
         if (string.IsNullOrWhiteSpace(notificationDto.Header) && _settings.IsHeaderRequired)
             throw new InvalidOperationException("Notification header must not be empty");
-        if (notificationDto.StartTime < _timeService.CurrentTime)
+        if (notificationDto.StartTime > _timeService.CurrentTime)
             throw new InvalidOperationException("Notification start time must be greater then current time");
     }
 }
