@@ -54,7 +54,35 @@ public class NotificationValidationServiceTests
 
         // Assert
         Assert.NotNull(actualeExeption);
-    }  
+    }
+
+    [Fact]
+    public void Validate_WhenIntervalLessThenSettingsMinInterval_Throws()
+    {
+        // Arrange
+        var interval = TimeSpan.FromMinutes(10);
+
+        var settings = new Mock<NotificationValidationSettings>();
+        settings.Setup(s => s.MinInterval).Returns(TimeSpan.FromMinutes(30));
+        var service = CreateValidationService(settings: settings.Object);
+
+        var notification = new NotificationDto
+        {
+            Text = "whatever",
+            Header = "whatever",
+            StartTime = DateTimeOffset.MaxValue,
+            Interval = interval
+        };
+
+        Exception actualExeption = null;
+
+        // Act
+        try { service.Validation(notification); }
+        catch (Exception e) { actualExeption = e; }
+
+        // Assert
+        Assert.NotNull(actualExeption);
+    }
 
     [Fact]
     public void Validate_WhenNotificationStartTimeIsNotEmptyAndLaterThenDateTimeNow_Throws()
