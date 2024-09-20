@@ -21,16 +21,19 @@ public class NotificationValidationService : INotificationValidationService
     public void Validation(NotificationDto notificationDto) 
     {
         if (string.IsNullOrWhiteSpace(notificationDto.Text))
-            throw new InvalidOperationException("Notification text must not be emtpy");
+            throw new InvalidOperationException("Notification Text must not be emtpy");
         if (string.IsNullOrWhiteSpace(notificationDto.Header) && _settings.IsHeaderRequired)
-            throw new InvalidOperationException("Notification header must not be empty");
-        if (notificationDto.StartTime < _timeService.CurrentTime)
-            throw new InvalidOperationException("Notification start time must be greater then current time");
+            throw new InvalidOperationException("Notification Header must not be empty");
+        if (notificationDto.StartTime > _timeService.CurrentTime)
+            throw new InvalidOperationException("Notification StartTime must be greater then current time");
         if (notificationDto.MaxAmount < 0)
-            throw new InvalidOperationException("Notificator max amount can`t be less then 0");
+            throw new InvalidOperationException("Notificator MaxAmount can`t be less then 0");
         if (notificationDto.Interval != null || notificationDto.Interval < _settings.MinInterval)
-            throw new InvalidOperationException("Notificator interval must be empty or interval value must be greater then MinInterval");
-        //if (notificationDto.DaysOfTheWeek != null || )
+            throw new InvalidOperationException("Notificator Interval could be empty or Interval value must be greater then MinInterval");
+        if (notificationDto.EndTime != null ||  notificationDto.EndTime < notificationDto.StartTime && (notificationDto.StartTime - notificationDto.EndTime) < _settings.MinInterval)
+            throw new InvalidOperationException("Notificator EndTime could be empty or he can`t be less then StartTime "
+            + "and difference between StartTime and EndTime shouldn't be less then MinInterval");
+        
 
     }
 }
