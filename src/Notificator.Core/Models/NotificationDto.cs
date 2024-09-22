@@ -33,7 +33,7 @@ public class NotificationDto
     /// <summary>
     /// Максимально кол-во отправок уведомления
     /// </summary>
-    public int MaxAmount { get; set; }
+    public int? MaxAmount { get; set; }
 
     /// <summary>
     /// Дни недели, в которые может прийти уведомление
