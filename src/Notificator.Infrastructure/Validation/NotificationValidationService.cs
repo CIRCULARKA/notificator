@@ -34,5 +34,14 @@ public class NotificationValidationService : INotificationValidationService
             throw new InvalidOperationException("Notification's end time must be greater then start time");
         if ((notificationDto.StartTime - notificationDto.EndTime) < _settings.MinInterval)
             throw new InvalidOperationException("Notification's {_settings.MinInterval} must be greater then difference between start time and end time");
+        if (notificationDto.DaysOfTheWeek == null)
+            return;
+        notificationDto.DaysOfTheWeek.ForEach(day => 
+        {
+            if (day < 1 || day > 7)
+                throw new InvalidOperationException("Day must be more then zero and less then seven");
+        });
+        if (notificationDto.DaysOfTheWeek.Distinct().Count() != notificationDto.DaysOfTheWeek.Count)
+            throw new InvalidOperationException("Day of the week must be unique");
     }
 }
