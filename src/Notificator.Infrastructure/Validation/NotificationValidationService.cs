@@ -18,7 +18,7 @@ public class NotificationValidationService : INotificationValidationService
     /// <summary>
     /// Validates notification. Takes into account validation settings
     /// </summary>
-    public void Validation(NotificationDto notificationDto) 
+    public void Validate(NotificationDto notificationDto) 
     {
         if (string.IsNullOrWhiteSpace(notificationDto.Text))
             throw new InvalidOperationException("Notification's text must not be empty");

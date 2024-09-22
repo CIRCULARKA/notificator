@@ -55,6 +55,7 @@ public class NotificationValidationServiceTests
         var service = CreateValidationService(settings: settings.Object);
 
         var notification = CreateValidNotification();
+        notification.Interval = notificationInterval;
 
         // Act
         var actualException = GetExceptionOfNotificationValidation(service, notification);
@@ -84,6 +85,22 @@ public class NotificationValidationServiceTests
         Assert.NotNull(actualException);
     } 
 
+    [Fact]
+    public void Validate_WhenMaxAmountLessThanZero_Throws()
+    {
+        // Arrange
+        var service = CreateValidationService();
+
+        var notification = CreateValidNotification();
+        notification.MaxAmount = -1;
+
+        // Act
+        var actualException = GetExceptionOfNotificationValidation(service, notification);
+
+        // Assert
+        Assert.NotNull(actualException);
+    } 
+
     /// <summary>
     /// Returns an exception that could be thrown while
     /// executing <see cref="NotificationValidationService.Validate(NotificationDto)"/>
@@ -100,7 +117,7 @@ public class NotificationValidationServiceTests
 
     /// <summary>
     /// Creates notification's DTO that has:
-    /// text, header, interval equals to 5 minutes,
+    /// text, header, interval is emtpy,
     /// start time equals to 01/01/2024, end time is emtpy
     /// max amount equals to zero, days of the week - all
     /// </summary>
@@ -109,7 +126,6 @@ public class NotificationValidationServiceTests
         {
             Header = "The Header",
             Text = "The text",
-            Interval = TimeSpan.FromMinutes(5),
             StartTime = DateTimeOffset.ParseExact("01/01/2024", "MM/dd/yyyy", formatProvider: null),
             EndTime = null,
             MaxAmount = 10,
@@ -118,15 +134,20 @@ public class NotificationValidationServiceTests
 
     /// <summary>
     /// Creates notification validation service from it's dependencies.
-    /// Fackes are inserted as dependencies if they are null
+    /// Fakes are inserted as dependencies if they are <see langword="null" />
+    /// If <paramref name="timeService"/> is <see langword="null" /> then the
+    /// <see cref="ITimeService.CurrentTime" /> will return <see cref="DateTimeOffset.MaxValue" />
     /// </summary>
     public NotificationValidationService CreateValidationService(
         ITimeService timeService = null,
-        NotificationValidationSettings settings = null
-    )
+        NotificationValidationSettings settings = null)
     {
         if (timeService is null)
-            timeService = new Mock<ITimeService>().Object;
+        {
+            var timeServiceMock = new Mock<ITimeService>();
+            timeServiceMock.Setup(s => s.CurrentTime).Returns(DateTimeOffset.MaxValue);
+            timeService = timeServiceMock.Object;
+        }
 
         if (settings is null)
             settings = new Mock<NotificationValidationSettings>().Object;
