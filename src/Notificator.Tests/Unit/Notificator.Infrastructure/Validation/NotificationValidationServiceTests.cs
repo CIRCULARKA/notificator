@@ -85,14 +85,16 @@ public class NotificationValidationServiceTests
         Assert.NotNull(actualException);
     } 
 
-    [Fact]
-    public void Validate_WhenMaxAmountLessThanZero_Throws()
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void Validate_WhenMaxAmountLessOrEqualToZero_Throws(int maxAmount)
     {
         // Arrange
         var service = CreateValidationService();
 
         var notification = CreateValidNotification();
-        notification.MaxAmount = -1;
+        notification.MaxAmount = maxAmount;
 
         // Act
         var actualException = GetExceptionOfNotificationValidation(service, notification);
@@ -100,6 +102,54 @@ public class NotificationValidationServiceTests
         // Assert
         Assert.NotNull(actualException);
     } 
+
+    [Theory]
+    [MemberData(nameof(DaysOfTheWeekWithDaysGreaterThan7AndLessThan1))]
+    public void Validate_WhenDaysOfTheWeekIsLessThan1OrGreaterThan7_Thorws(IList<int> daysOfTheWeek)
+    {
+        // Arrange
+        var service = CreateValidationService();
+
+        var notification = CreateValidNotification();
+        notification.DaysOfTheWeek = daysOfTheWeek.ToList();
+
+        // Act
+        var actualException = GetExceptionOfNotificationValidation(service, notification);
+
+        // Assert
+        Assert.NotNull(actualException);
+    }
+
+    [Theory]
+    [MemberData(nameof(DaysOfTheWeekWithDuplicateValues))]
+    public void Validate_WhenDaysOfTheWeekHasDuplicates_Thorws(IList<int> daysOfTheWeek)
+    {
+        // Arrange
+        var service = CreateValidationService();
+
+        var notification = CreateValidNotification();
+        notification.DaysOfTheWeek = daysOfTheWeek.ToList();
+
+        // Act
+        var actualException = GetExceptionOfNotificationValidation(service, notification);
+
+        // Assert
+        Assert.NotNull(actualException);
+    } 
+
+    public static IEnumerable<object[]> DaysOfTheWeekWithDaysGreaterThan7AndLessThan1 = new List<object[]>
+    {
+        new object[] { new List<int> { 0, 2, 3, 4, 1 } },
+        new object[] { new List<int> { 1, 2, 3, 7, 8 } },
+        new object[] { new List<int> { 1, 2, -1, 7, 4 } }
+    };
+
+    public static IEnumerable<object[]> DaysOfTheWeekWithDuplicateValues = new List<object[]>
+    {
+        new object[] { new List<int> { 1, 1, 2, 3, 4 } },
+        new object[] { new List<int> { 1, 2, 3, 3, 4, 5 } },
+        new object[] { new List<int> { 1, 2, 3, 4, 5, 5, 7, 7 } }
+    };
 
     /// <summary>
     /// Returns an exception that could be thrown while
