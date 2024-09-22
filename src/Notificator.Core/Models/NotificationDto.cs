@@ -23,7 +23,7 @@ public class NotificationDto
     /// <summary>
     /// Время последней отправки уведомления
     /// </summary>
-    public DateTime? EndTime { get; set; }
+    public DateTimeOffset? EndTime { get; set; }
 
     /// <summary>
     /// Интервал отправки уведомления
