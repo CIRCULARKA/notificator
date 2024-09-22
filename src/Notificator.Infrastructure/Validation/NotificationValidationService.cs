@@ -18,7 +18,7 @@ public class NotificationValidationService : INotificationValidationService
     /// <summary>
     /// Validates notification. Takes into account validation settings
     /// </summary>
-    public void Validation(NotificationDto notificationDto) 
+    public void Validate(NotificationDto notificationDto) 
     {
         if (string.IsNullOrWhiteSpace(notificationDto.Text))
             throw new InvalidOperationException("Notification Text must not be emtpy");
@@ -30,7 +30,7 @@ public class NotificationValidationService : INotificationValidationService
             throw new InvalidOperationException("Notificator MaxAmount can`t be less then 0");
         if (notificationDto.Interval != null || notificationDto.Interval < _settings.MinInterval)
             throw new InvalidOperationException("Notificator Interval could be empty or Interval value must be greater then MinInterval");
-        if (notificationDto.EndTime != null ||  notificationDto.EndTime < notificationDto.StartTime && (notificationDto.StartTime - notificationDto.EndTime) < _settings.MinInterval)
+        if (notificationDto.EndTime != null || notificationDto.EndTime < notificationDto.StartTime && (notificationDto.StartTime - notificationDto.EndTime) < _settings.MinInterval)
             throw new InvalidOperationException("Notificator EndTime could be empty or he can`t be less then StartTime "
             + "and difference between StartTime and EndTime shouldn't be less then MinInterval");
         
