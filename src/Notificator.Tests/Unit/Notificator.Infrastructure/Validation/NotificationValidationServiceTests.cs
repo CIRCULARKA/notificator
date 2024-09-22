@@ -11,18 +11,11 @@ public class NotificationValidationServiceTests
         // Arrange
         var service = CreateValidationService();
 
-        var notification = new NotificationDto
-        {
-            StartTime = new DateTime(2099, 01, 01),
-            Header = "nevermind",
-            Text = notificationText
-        };
-
-        Exception actualException = null;
+        var notification = CreateValidNotification();
+        notification.Text = notificationText;
 
         // Act
-        try { service.Validation(notification); }
-        catch (Exception e) { actualException = e; }
+        var actualException = GetExceptionOfNotificationValidation(service, notification);
 
         // Assert
         Assert.NotNull(actualException);
@@ -40,48 +33,35 @@ public class NotificationValidationServiceTests
 
         var service = CreateValidationService(settings: settings);
 
-        var notification = new NotificationDto
-        {
-            Text = "hghgh",
-            Header = notificationHeader
-        };
-
-        Exception actualeExeption = null;
+        var notification = CreateValidNotification();
+        notification.Header = notificationHeader;
 
         // Act
-        try { service.Validation(notification); }
-        catch (Exception e) { actualeExeption = e; }
+        var actualException = GetExceptionOfNotificationValidation(service, notification);
 
         // Assert
-        Assert.NotNull(actualeExeption);
+        Assert.NotNull(actualException);
     }
 
     [Fact]
     public void Validate_WhenIntervalLessThenSettingsMinInterval_Throws()
     {
         // Arrange
-        var interval = TimeSpan.FromMinutes(10);
+        var notificationInterval = TimeSpan.FromMinutes(10);
 
         var settings = new Mock<NotificationValidationSettings>();
-        settings.Setup(s => s.MinInterval).Returns(TimeSpan.FromMinutes(30));
+        settings.Setup(s => s.MinInterval).Returns(notificationInterval - TimeSpan.FromMinutes(5));
+
         var service = CreateValidationService(settings: settings.Object);
 
-        var notification = new NotificationDto
-        {
-            Text = "whatever",
-            Header = "whatever",
-            StartTime = DateTimeOffset.MaxValue,
-            Interval = interval
-        };
-
-        Exception actualExeption = null;
+        var notification = CreateValidNotification();
+        notification.Interval = notificationInterval;
 
         // Act
-        try { service.Validation(notification); }
-        catch (Exception e) { actualExeption = e; }
+        var actualException = GetExceptionOfNotificationValidation(service, notification);
 
         // Assert
-        Assert.NotNull(actualExeption);
+        Assert.NotNull(actualException);
     }
 
     [Fact]
@@ -96,30 +76,78 @@ public class NotificationValidationServiceTests
 
         var service = CreateValidationService(timeService: timeService.Object);
 
-        var notification = new NotificationDto
-        {
-            Text = "whatever",
-            Header = "whatever",
-            StartTime = notificationStartTime
-        };
-
-        Exception actualExeption = null;
+        var notification = CreateValidNotification();
 
         // Act
-        try { service.Validation(notification); }
-        catch (Exception e) { actualExeption = e; }
+        var actualException = GetExceptionOfNotificationValidation(service, notification);
 
         // Assert
-        Assert.NotNull(actualExeption);
+        Assert.NotNull(actualException);
     } 
 
+    [Fact]
+    public void Validate_WhenMaxAmountLessThanZero_Throws()
+    {
+        // Arrange
+        var service = CreateValidationService();
+
+        var notification = CreateValidNotification();
+        notification.MaxAmount = -1;
+
+        // Act
+        var actualException = GetExceptionOfNotificationValidation(service, notification);
+
+        // Assert
+        Assert.NotNull(actualException);
+    } 
+
+    /// <summary>
+    /// Returns an exception that could be thrown while
+    /// executing <see cref="NotificationValidationService.Validate(NotificationDto)"/>
+    /// </summary>
+    private Exception GetExceptionOfNotificationValidation(NotificationValidationService service, NotificationDto dto)
+    {
+        Exception result = null;
+
+        try { service.Validate(dto); }
+        catch (Exception e) { result = e; }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Creates notification's DTO that has:
+    /// text, header, interval is emtpy,
+    /// start time equals to 01/01/2024, end time is emtpy
+    /// max amount equals to zero, days of the week - all
+    /// </summary>
+    private NotificationDto CreateValidNotification() =>
+        new NotificationDto
+        {
+            Header = "The Header",
+            Text = "The text",
+            StartTime = DateTimeOffset.ParseExact("01/01/2024", "MM/dd/yyyy", formatProvider: null),
+            EndTime = null,
+            MaxAmount = 10,
+            DaysOfTheWeek = new List<int> { 1, 2, 3, 4, 5, 6, 7 }
+        };
+
+    /// <summary>
+    /// Creates notification validation service from it's dependencies.
+    /// Fakes are inserted as dependencies if they are <see langword="null" />
+    /// If <paramref name="timeService"/> is <see langword="null" /> then the
+    /// <see cref="ITimeService.CurrentTime" /> will return <see cref="DateTimeOffset.MaxValue" />
+    /// </summary>
     public NotificationValidationService CreateValidationService(
         ITimeService timeService = null,
-        NotificationValidationSettings settings = null
-    )
+        NotificationValidationSettings settings = null)
     {
         if (timeService is null)
-            timeService = new Mock<ITimeService>().Object;
+        {
+            var timeServiceMock = new Mock<ITimeService>();
+            timeServiceMock.Setup(s => s.CurrentTime).Returns(DateTimeOffset.MaxValue);
+            timeService = timeServiceMock.Object;
+        }
 
         if (settings is null)
             settings = new Mock<NotificationValidationSettings>().Object;

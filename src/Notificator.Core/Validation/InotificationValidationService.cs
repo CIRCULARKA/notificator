@@ -8,5 +8,5 @@ public interface INotificationValidationService
     /// <summary>
     /// Validates notification
     /// </summary>
-    public void Validation(NotificationDto notificationDto);
+    public void Validate(NotificationDto notificationDto);
 }
