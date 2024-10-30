@@ -26,7 +26,7 @@ public class NotificationValidationService : INotificationValidationService
             throw new InvalidOperationException("Notification's header must not be empty");
         if (notificationDto.StartTime > _timeService.CurrentTime)
             throw new InvalidOperationException("Notification's start time must be greater then current time");
-        if (notificationDto.MaxAmount < 0)
+        if (notificationDto.MaxAmount <= 0)
             throw new InvalidOperationException("Max amount of notifications must be greater than zero");
         if (notificationDto.Interval != null || notificationDto.Interval < _settings.MinInterval)
             throw new InvalidOperationException("Notification's interval must not be less than the minimal interval of {_settings.MinInterval}");
