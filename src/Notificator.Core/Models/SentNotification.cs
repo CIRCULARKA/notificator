@@ -5,7 +5,6 @@ namespace Notificator.Core.Models;
 /// </summary>
 public class SentNotification
 {
-    public void Incel() { return; }
     /// <summary>
     /// Когда уведомление было отправлено
     /// </summary>
