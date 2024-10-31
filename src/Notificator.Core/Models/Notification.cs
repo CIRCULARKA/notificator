@@ -1,7 +1,7 @@
 ﻿namespace Notificator.Core.Models;
 
 /// <summary>
-/// Model of a notification
+/// Уведомление
 /// </summary>
 public class Notification
 {
@@ -44,4 +44,9 @@ public class Notification
     /// Выполненные уведомления
     /// </summary>
     public bool IsCompleted { get; }
+
+    /// <summary>
+    /// История отправки этого уведомления
+    /// </summary>
+    public List<SentNotification> History { get; }
 }
