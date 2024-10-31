@@ -23,7 +23,7 @@ public class Notification
     /// <summary>
     /// Время последней отправки уведомления
     /// </summary>
-    public DateTime? EndTime { get; init; }
+    public DateTimeOffset? EndTime { get; init; }
 
     /// <summary>
     /// Интервал отправки уведомления
@@ -44,4 +44,10 @@ public class Notification
     /// История отправки этого уведомления
     /// </summary>
     public List<SentNotification> History { get; init; }
+
+    /// <summary>
+    /// Является ли уведомление одноразовым?
+    /// </summary>
+    public bool IsOneTime =>
+        Interval is null;
 }
