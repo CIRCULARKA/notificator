@@ -8,10 +8,15 @@ public class NotificationInspector : INotificationInspector
     public bool ShouldBeCompleted(Notification notification)
     {
         ArgumentNullException.ThrowIfNull(notification);
-        
+
         if (notification.IsOneTime && notification.History == null)
             return false;
-        return false;
-        
+
+        if (notification.IsOneTime && notification.History != null && notification.History.Any())
+            return true;
+
+        if (notification.IsInfinite)
+            return false;
+        return false;        
     }
 }
