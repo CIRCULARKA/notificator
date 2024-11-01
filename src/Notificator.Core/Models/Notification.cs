@@ -33,7 +33,7 @@ public class Notification
     /// <summary>
     /// Максимально кол-во отправок уведомления
     /// </summary>
-    public int MaxAmount { get; init; }
+    public int? MaxAmount { get; init; }
 
     /// <summary>
     /// Дни недели, в которые может прийти уведомление
@@ -50,4 +50,10 @@ public class Notification
     /// </summary>
     public bool IsOneTime =>
         Interval is null;
+
+    /// <summary>
+    /// Является ли уведомление нескончаемым?
+    /// </summary>
+    public bool IsInfinite =>
+        MaxAmount == null && EndTime == null && IsOneTime == false; 
 }
