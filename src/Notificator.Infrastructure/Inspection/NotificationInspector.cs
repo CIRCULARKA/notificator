@@ -9,9 +9,9 @@ public class NotificationInspector : INotificationInspector
     {
         if (notification == null)
             throw new ArgumentNullException();
-        if (notification.EndTime == null && notification.History == null)
+        if (notification.IsOneTime && notification.History == null)
             return false;
-        if (notification.EndTime == null && notification.History != null)
+        if (notification.IsOneTime && notification.History != null)
             return false;
         return false;
         
