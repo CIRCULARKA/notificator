@@ -11,8 +11,6 @@ public class NotificationInspector : INotificationInspector
             throw new ArgumentNullException();
         if (notification.IsOneTime && notification.History == null)
             return false;
-        if (notification.IsOneTime && notification.History != null)
-            return false;
         return false;
         
     }
