@@ -7,8 +7,8 @@ public class NotificationInspector : INotificationInspector
 {
     public bool ShouldBeCompleted(Notification notification)
     {
-        if (notification == null)
-            throw new ArgumentNullException();
+        ArgumentNullException.ThrowIfNull(notification);
+        
         if (notification.IsOneTime && notification.History == null)
             return false;
         return false;
