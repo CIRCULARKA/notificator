@@ -7,6 +7,13 @@ public class NotificationInspector : INotificationInspector
 {
     public bool ShouldBeCompleted(Notification notification)
     {
-        throw new NotImplementedException();
+        if (notification == null)
+            throw new ArgumentNullException();
+        if (notification.EndTime == null && notification.History == null)
+            return false;
+        if (notification.EndTime == null && notification.History != null)
+            return false;
+        return false;
+        
     }
 }
